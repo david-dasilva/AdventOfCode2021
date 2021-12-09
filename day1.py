@@ -1,4 +1,5 @@
 from utils.file_utils import get_lines
+from itertools import pairwise
 from unittest import TestCase
 
 
@@ -10,17 +11,14 @@ def part1(depths):
 
 
 def part2(depths):
-    increases = 0
-    previous_window = 0
-    max_index = len(depths)
-    current_index = 0
-    while current_index + 2 < max_index:
-        current_window = depths[current_index] + depths[current_index + 1] + depths[current_index + 2]
-        if 0 < previous_window < current_window:
-            increases += 1
-        previous_window = current_window
-        current_index += 1
-    return increases
+    x, y = triplewise(depths[:-1]), triplewise(depths[1:])
+    result = sum(1 for xs, ys in zip(x, y) if sum(ys) > sum(xs))
+    return result
+
+
+def triplewise(iterable):
+    for (a, _), (b, c) in pairwise(pairwise(iterable)):
+        yield a, b, c
 
 
 if __name__ == "__main__":
