@@ -3,14 +3,10 @@ from unittest import TestCase
 
 
 def part1(depths):
-    increases = 0
-    previous_depth = 0
-    for depth in depths:
-        if 0 < previous_depth < depth:
-            increases += 1
-        previous_depth = depth
+    x, y = depths[:-1], depths[1:]
+    result = sum(1 for xs, ys in zip(x, y) if ys > xs)
 
-    return increases
+    return result
 
 
 def part2(depths):
