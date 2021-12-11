@@ -2,49 +2,45 @@ from utils.file_utils import get_lines
 
 
 def part1(input):
+    commands = getCommands(input)
     xpos = 0
     depth = 0
 
-    for command in input:
-        cmd = getDirection(command)
-        amount = getAmount(command)
-        if cmd == "up":
-            depth -= amount
-        elif cmd == "down":
-            depth += amount
-        else:
-            xpos += amount
+    for command in commands:
+        match command:
+            case ('up', amount):
+                depth -= amount
+            case ('down', amount):
+                depth += amount
+            case ('forward', amount):
+                xpos += amount
 
     return xpos * depth
 
 
 def part2(input):
+    commands = getCommands(input)
     xpos = 0
     depth = 0
     aim = 0
-    for command in input:
-        cmd = getDirection(command)
-        amount = getAmount(command)
-        if cmd == "up":
-            aim -= amount
-        elif cmd == "down":
-            aim += amount
-        else:
-            xpos += amount
-            depth += aim * amount
+    for command in commands:
+        match command:
+            case ('up', amount):
+                aim -= amount
+            case ('down', amount):
+                aim += amount
+            case ('forward', amount):
+                xpos += amount
+                depth += aim * amount
 
     return xpos * depth
 
 
-def getDirection(command: str):
-    return command.split(" ")[0]
-
-
-def getAmount(command: str):
-    return int(command.split(" ")[1])
+def getCommands(input_lines):
+    return [(row.split()[0], int(row.split()[1])) for row in input_lines]
 
 
 if __name__ == "__main__":
-    input_list = get_lines("day2.txt")
-    print(f'Solution 1 : {part1(input_list)}')
-    print(f'Solution 2 : {part2(input_list)}')
+    input_lines = get_lines("day2.txt")
+    print(f'Solution 1 : {part1(input_lines)}')
+    print(f'Solution 2 : {part2(input_lines)}')
